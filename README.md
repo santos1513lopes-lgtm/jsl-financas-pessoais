@@ -56,7 +56,7 @@ Baixe um backup antes. **Apagar todos os dados** exige digitar `APAGAR`, remove 
 
 ## Privacidade e limites
 
-Os dados e a URL da planilha ficam no armazenamento local do navegador. Tokens Google ficam apenas na memória e expiram; o usuário reconecta quando solicitado. Não há senha própria, criptografia local, contas de usuário do aplicativo, analytics ou backend JSL. Quem acessar seu perfil de navegador poderá ver os dados locais. Desconectar Google não remove os dados locais; faça backup e reset se precisar limpar o dispositivo.
+Os dados e a URL da planilha ficam no armazenamento local do navegador. Tokens Google ficam apenas na memória e expiram; o usuário reconecta quando solicitado. Há cadastro local de usuário e senha com criptografia AES-GCM dos dados financeiros. A senha não é persistida; a chave derivada por PBKDF2 fica apenas na memória durante a sessão. Cada abertura exige login. Não há servidor de contas, analytics nem sincronização de credenciais. Veja [Login local e recuperação](docs/LOGIN-LOCAL.md). O nome de usuário e os metadados da conexão Google não são criptografados. O backup JSON exportado também não é criptografado. Desconectar Google não remove os dados locais; faça backup e reset se precisar limpar o dispositivo.
 
 A autorização usada é o escopo Google Sheets (leitura/escrita de planilhas acessíveis à conta), mais amplo que apenas a planilha escolhida. O app só chama a planilha vinculada ou cria uma quando solicitado. Revogue a autorização nas permissões da conta Google se desejar.
 
@@ -89,3 +89,7 @@ No celular, abra no navegador. O manifesto permite uso como app quando o navegad
 Requer Node.js 20+ somente para testes: `node --test tests/*.test.cjs`. Para executar localmente, sirva esta pasta com um servidor HTTP local, por exemplo `python3 -m http.server 8000`. OAuth local requer cadastrar `http://localhost:8000` nas origens autorizadas.
 
 Nunca coloque tokens, senhas, client secrets, planilhas preenchidas ou backups financeiros no repositório. O `googleClientId` é público por definição; `client_secret` nunca é usado no navegador.
+
+## Login local
+
+No primeiro acesso, crie usuário e senha (mínimo de 8 caracteres). Dados anteriores deste navegador são preservados e criptografados. Nas próximas aberturas, faça login. Use **Sair e bloquear** para encerrar a sessão. Em **Esqueci meu usuário ou senha**, selecione um backup JSON, confirme a substituição dos dados e crie novas credenciais. Sem senha e sem backup, não há recuperação dos registros. [Passo a passo e limites](docs/LOGIN-LOCAL.md).

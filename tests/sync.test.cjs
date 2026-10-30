@@ -16,7 +16,7 @@ function harness(){
  if(url.endsWith(':batchUpdate')){writes++;const payload=JSON.parse(opts.body);const rows=payload.requests.filter(x=>x.updateCells).map(x=>x.updateCells.rows.map(r=>r.values.map(v=>v.userEnteredValue.numberValue??v.userEnteredValue.stringValue)));remote={accounts:rows[0].slice(1).map(r=>Object.fromEntries(AH.map((k,i)=>[k,r[i]]))),transactions:rows[1].slice(1).map(r=>Object.fromEntries(TH.map((k,i)=>[k,r[i]])))};return {ok:true,json:async()=>({})};}
  return {ok:true,json:async()=>({spreadsheetUrl:'https://docs.google.com/spreadsheets/d/test/edit',sheets:tabs.map(properties=>({properties}))})};
  }};
- c.window=c;c.JSL_CONFIG={googleClientId:'test.apps.googleusercontent.com'};c.addEventListener=(n,fn)=>listeners.set(n,fn);
+ c.LocalVault={write:async data=>Finance.validate(data)};c.window=c;c.JSL_CONFIG={googleClientId:'test.apps.googleusercontent.com'};c.addEventListener=(n,fn)=>listeners.set(n,fn);
  vm.createContext(c);vm.runInContext(fs.readFileSync(require.resolve('../assets/sheets.js'),'utf8'),c);
  $('sheetUrl').value='https://docs.google.com/spreadsheets/d/test/edit';
  return {c,$,storage,timers,change:()=>listeners.get('finance-change')(),remote:()=>remote,setRemote:r=>remote=r,writes:()=>writes,offline:()=>fail=true};

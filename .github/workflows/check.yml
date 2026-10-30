@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: '22'
       - run: node --test tests/*.test.cjs
-      - run: node --check assets/app.js && node --check assets/sheets.js && node --check sw.js
+      - run: node --check assets/vault.js && node --check assets/auth.js && node --check assets/app.js && node --check assets/sheets.js && node --check sw.js

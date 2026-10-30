@@ -28,3 +28,5 @@ footer{text-align:center;color:#8190a5;font-size:12px;padding:25px}
 @media(max-width:520px){.grid{grid-template-columns:1fr 1fr;gap:8px}.metric strong{font-size:19px}.formgrid{grid-template-columns:1fr}.wrap{margin:14px auto}.tab{padding:9px 10px;font-size:12px}}
 
 button:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #e6ad31;outline-offset:3px} #syncError{color:#a32632;margin-top:10px} summary{cursor:pointer} details{margin:14px 0} @media(max-width:520px){header h1{font-size:22px}.actions button{flex:1} .row>*{min-width:120px}}
+
+.auth-wrap{max-width:540px;margin-top:36px}.auth-wrap form{margin-top:20px}.session-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.recovery-check{display:flex;gap:10px;align-items:flex-start;margin:16px 0}.recovery-check input{width:auto;margin-top:4px}

@@ -31,7 +31,7 @@ async function readRemote(id){
 }
 function cell(v){return {userEnteredValue:typeof v==='number'?{numberValue:v}:{stringValue:String(v??'')}};}
 function requests(data,tabs){const rows={Contas:[AH,...data.accounts.map(a=>AH.map(k=>a[k]??''))],Lancamentos:[TH,...data.transactions.map(t=>TH.map(k=>t[k]??''))],Config:[['key','value'],['schema','jsl-v2'],['revision',crypto.randomUUID()],['updatedAt',new Date().toISOString()]]};const out=[];for(const name of Object.keys(rows)){const tab=tabs.find(t=>t.title===name),height=Math.max(tab.gridProperties?.rowCount||1000,rows[name].length+1),width=rows[name][0].length;out.push({updateSheetProperties:{properties:{sheetId:tab.sheetId,gridProperties:{rowCount:height,columnCount:Math.max(tab.gridProperties?.columnCount||26,width)}},fields:'gridProperties.rowCount,gridProperties.columnCount'}});out.push({updateCells:{range:{sheetId:tab.sheetId,startRowIndex:0,endRowIndex:height,startColumnIndex:0,endColumnIndex:width},rows:rows[name].map(r=>({values:r.map(cell)})),fields:'userEnteredValue'}});}return out;}
-async function pull(){if(!binding||!connected)throw Error('Conecte uma planilha primeiro.');if(binding.dirty&&!confirm('Há alterações locais pendentes. Substituí-las pelos dados da planilha? Baixe backup antes.'))return;const r=await readRemote(binding.id);localStorage.setItem(KEY,JSON.stringify(r.data));db=r.data;binding.hash=r.hash;binding.dirty=false;persist();render();status('Dados carregados do Google Sheets · '+new Date().toLocaleTimeString('pt-BR'));}
+async function pull(){if(!binding||!connected)throw Error('Conecte uma planilha primeiro.');if(binding.dirty&&!confirm('Há alterações locais pendentes. Substituí-las pelos dados da planilha? Baixe backup antes.'))return;const r=await readRemote(binding.id);await LocalVault.write(r.data);db=r.data;binding.hash=r.hash;binding.dirty=false;persist();render();status('Dados carregados do Google Sheets · '+new Date().toLocaleTimeString('pt-BR'));}
 async function push(){
  if(!binding||!connected)throw Error('Conecte com Google antes de salvar na planilha.');
  const remote=await readRemote(binding.id);
@@ -44,7 +44,7 @@ async function push(){
  binding.hash=verified.hash;binding.dirty=JSON.stringify(db)!==json;persist();status(binding.dirty?'Alterações mais recentes pendentes':'Salvo no Google Sheets · '+new Date().toLocaleTimeString('pt-BR'));if(binding.dirty)queue();
 }
 function normalize(d){return {accounts:d.accounts.map(a=>Object.fromEntries(AH.map(k=>[k,a[k]??'']))),transactions:d.transactions.map(t=>Object.fromEntries(TH.map(k=>[k,t[k]??''])))};}
-async function run(fn){if(busy){error(Error('Aguarde a sincronização atual.'));return;}busy=true;$('syncError').textContent='';try{await fn()}catch(e){error(e)}finally{busy=false;}}
+async function run(fn){if(busy){error(Error('Aguarde a sincronização atual.'));return;}busy=true;window.JSLDataBusy=true;$('syncError').textContent='';try{await fn()}catch(e){error(e)}finally{busy=false;window.JSLDataBusy=false;}}
 function queue(){clearTimeout(timer);if(connected)timer=setTimeout(()=>run(push),1200);}
 window.addEventListener('finance-change',()=>{if(binding){binding.dirty=true;persist();status('Salvo neste navegador · envio à planilha pendente');queue();}});
 $('connectGoogle').onclick=()=>run(async()=>{
@@ -62,5 +62,6 @@ $('disconnectGoogle').onclick=()=>{if(busy){error(Error('Aguarde a sincronizaç�
 $('createGoogle').onclick=()=>run(async()=>{await auth();const r=await fetch('https://sheets.googleapis.com/v4/spreadsheets',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({properties:{title:'JSL Finanças Pessoais',locale:'pt_BR',timeZone:'America/Sao_Paulo'},sheets:['Contas','Lancamentos','Config'].map((title,i)=>({properties:{title,sheetId:i,gridProperties:{rowCount:1000,columnCount:26,frozenRowCount:1}}}))})});if(!r.ok)throw Error('Não foi possível criar a planilha ('+r.status+').');const made=await r.json();$('sheetUrl').value=made.spreadsheetUrl;await api(made.spreadsheetId,':batchUpdate',{requests:requests({accounts:[],transactions:[]},made.sheets.map(s=>s.properties))});status('Planilha vazia criada. Clique em Conectar com Google para vinculá-la.');});
 window.addEventListener('online',()=>{if(binding?.dirty)queue()});
 window.addEventListener('beforeunload',e=>{if(busy||binding?.dirty){e.preventDefault();e.returnValue='';}});
-window.addEventListener('storage',e=>{if(e.key===KEY){connected=false;token='';status('Dados alterados em outra aba. Recarregue esta página antes de continuar.');document.querySelectorAll('button,input,select').forEach(x=>x.disabled=true);}});
+window.addEventListener('storage',e=>{if(e.key===KEY||e.key==='jsl_local_vault_v1'){clearTimeout(timer);connected=false;token='';expires=0;status('Dados alterados em outra aba. Exporte seu JSON e recarregue antes de continuar.');document.querySelectorAll('#appShell button,#appShell input,#appShell select').forEach(x=>{if(x.id!=='exportar')x.disabled=true});}});
+
 })();
