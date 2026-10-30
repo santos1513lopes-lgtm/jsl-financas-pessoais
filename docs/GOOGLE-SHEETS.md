@@ -11,7 +11,7 @@ Um link de compartilhamento identifica a planilha e as permissões humanas; ele 
 3. Configure a tela de consentimento/Google Auth Platform: nome, e-mail de suporte, público e escopo `https://www.googleapis.com/auth/spreadsheets`.
 4. Para uso pessoal, mantenha o aplicativo em teste e inclua sua conta em usuários de teste. Outras pessoas também precisam ser adicionadas enquanto estiver em teste. A disponibilidade pública para qualquer conta pode exigir publicação/verificação pelo Google; não está configurada automaticamente por este código.
 5. Crie uma credencial **OAuth 2.0 Client ID → Web application**.
-6. Em **Authorized JavaScript origins**, cadastre a origem exata da página publicada: protocolo e domínio, sem o caminho do repositório. Exemplo apenas: `https://SEU-USUARIO.github.io`.
+6. Em **Authorized JavaScript origins**, cadastre a origem exata da página publicada: protocolo e domínio, sem o caminho do repositório. Para este repositório: `https://santos1513lopes-lgtm.github.io`.
 7. Para testes locais, cadastre também `http://localhost:8000` se esse for o endereço utilizado.
 8. Copie o Client ID (termina em `.apps.googleusercontent.com`) para `googleClientId` em `config.js` e envie o commit. Não há client secret no projeto.
 9. Alternativamente, cole o Client ID no campo de configuração avançada em **Backup e dados**. Ele é público e fica lembrado apenas no navegador; configurar o arquivo evita repetir isso em cada dispositivo.
