@@ -1,5 +1,4 @@
 
-const KEY='jsl_financas_pessoais_v1';
 let db=Finance.validate(JSON.parse(JSON.stringify(LocalVault.data)));
 const $=id=>document.getElementById(id);
 const money=n=>(Number(n)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
@@ -11,7 +10,7 @@ const monthLabel=s=>{let [y,m]=s.split('-');return new Date(+y,+m-1,1).toLocaleD
 window.JSLUnsaved=false;window.JSLDataBusy=false;
 async function save(){
 window.JSLUnsaved=true;window.JSLDataBusy=true;const previous=[...document.querySelectorAll('#appShell button,#appShell input,#appShell select')].map(el=>[el,el.disabled]);previous.forEach(([el])=>el.disabled=true);
-try{Finance.validate(db);await LocalVault.write(db);window.JSLUnsaved=false;render();$('syncStatus').textContent='Salvo e criptografado neste navegador';window.dispatchEvent(new Event('finance-change'));return true}catch(e){render();$('syncStatus').textContent='Não gravado. Baixe um backup JSON antes de recarregar.';alert('Não foi possível salvar: '+e.message);return false}finally{window.JSLDataBusy=false;previous.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled})}
+try{Finance.validate(db);await LocalVault.write(db);window.JSLUnsaved=false;render();$('syncStatus').textContent='Salvo e criptografado neste navegador';return true}catch(e){render();$('syncStatus').textContent='Não gravado. Baixe um backup JSON antes de recarregar.';alert('Não foi possível salvar: '+e.message);return false}finally{window.JSLDataBusy=false;previous.forEach(([el,disabled])=>{if(el.isConnected)el.disabled=disabled})}
 }
 window.addEventListener('beforeunload',e=>{if(window.JSLUnsaved||window.JSLDataBusy){e.preventDefault();e.returnValue='';}});
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
@@ -58,8 +57,7 @@ $('formConta').addEventListener('submit',async e=>{e.preventDefault();db.account
 $('filtro').addEventListener('change',render);$('horizonte').addEventListener('change',projection);$('baseProjecao').addEventListener('change',projection);
 document.querySelectorAll('.tab[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab[data-tab]').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active');render()}));
 $('exportar').onclick=()=>{let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='JSL-Financas-Backup-'+dateISO()+'.json';a.click();URL.revokeObjectURL(a.href)};
-$('importar').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let data=Finance.validate(JSON.parse(await f.text()));if(confirm('Restaurar este backup? Os dados atuais serão substituídos.')){db=data;if(await save())alert('Backup restaurado e criptografado.')}}catch(err){alert('Arquivo de backup inválido.')}e.target.value=''};
-$('limparTudo').onclick=async()=>{if(prompt('Isso apagará contas e lançamentos locais e enviará a exclusão à planilha se conectada. Faça backup antes. Digite APAGAR para confirmar:')==='APAGAR'){db={accounts:[],transactions:[]};await save()}};
+$('importar').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let data=Finance.validate(JSON.parse(await f.text()));if(confirm('Restaurar / atualizar usando este JSON? Todas as contas e lançamentos atuais serão substituídos pelo conteúdo do arquivo, sem mesclagem. Exporte um backup antes de continuar.')){db=data;if(await save())alert('Backup restaurado e criptografado.')}}catch(err){alert('Arquivo de backup inválido.')}e.target.value=''};
 $('data').value=dateISO();render();
 
 $('formLanc').addEventListener('reset',()=>setTimeout(()=>{$('tipo').dispatchEvent(new Event('change'));$('data').value=dateISO();$('valueLabel').textContent='Valor total (R$)'},0));

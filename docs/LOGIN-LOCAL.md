@@ -20,19 +20,19 @@ O cadastro pertence ao perfil do navegador e ao endereço do site. Outro navegad
 3. Confirme que os registros locais serão substituídos pelo conteúdo do backup. Alterações posteriores àquele backup serão perdidas.
 4. Informe novo usuário e nova senha, confirme e clique em **Redefinir acesso e restaurar JSON**.
 
-A senha antiga não é recuperada. Sem a senha e sem um JSON válido, não é possível recuperar os registros cifrados. O reset não exige que o backup tenha uma senha: quem possui o JSON pode ler e importar seus dados. Não compartilhe esse arquivo publicamente. A vinculação anterior ao Sheets é removida na recuperação; reconecte somente após conferir os registros.
+A senha antiga não é recuperada. Sem a senha e sem um JSON válido, não é possível recuperar os registros cifrados. O reset não exige que o backup tenha uma senha: quem possui o JSON pode ler e importar seus dados. Não compartilhe esse arquivo publicamente.
 
-**Apagar todos os dados**, dentro do aplicativo, apaga contas e lançamentos e mantém o cadastro de acesso. A recuperação de senha substitui também o cadastro. Nenhuma dessas operações apaga backups que você baixou.
+A recuperação com JSON substitui os registros e o cadastro de acesso. Não apaga os backups que você baixou. Para restaurar apenas os dados mantendo o login, use **Backup e dados → Restaurar / atualizar por JSON**, após entrar.
 
 ## Implementação e limites
 
 - `assets/vault.js`: armazenamento local criptografado com AES-GCM de 256 bits, IV aleatório por gravação, sal aleatório por cadastro e chave derivada com PBKDF2 SHA-256 (310.000 iterações). A senha e a chave não são gravadas no armazenamento local. O usuário fica visível no registro do cadastro.
 - `assets/auth.js`: cadastro, login, bloqueio e recuperação condicionada à validação do JSON e confirmação de substituição. A interface financeira é carregada depois do desbloqueio.
-- `assets/app.js` e `assets/sheets.js`: persistência financeira passa pelo cofre; tokens Google continuam apenas em memória. O login local não configura nem substitui o OAuth do Google.
+- `assets/app.js`: persistência financeira passa pelo cofre. Exportação e restauração utilizam JSON; não há conexão com serviços de dados externos.
 - `sw.js`: cache atualizado para incluir os novos arquivos. HTTPS e Web Crypto são necessários. Falhas de armazenamento exibem aviso: exporte o JSON antes de fechar.
 - `tests/auth.test.cjs`: valida o fluxo de cadastro, login e recuperação com JSON obrigatório e confirmação.
 - `tests/vault.test.cjs`: migração, desbloqueio, senha incorreta, adulteração, troca de credenciais, conflito entre abas e falha de armazenamento. Execute `node --test tests/*.test.cjs`.
 
 A proteção é local, sem backend de autenticação. Ela não impede alguém de apagar o armazenamento ou modificar uma cópia do código, e não protege uma sessão já desbloqueada contra extensões maliciosas ou scripts comprometidos. Páginas do mesmo domínio GitHub Pages compartilham a origem do navegador; publique somente código confiável nessa conta. Evite abas simultâneas: ao detectar alterações, o app bloqueia edição na outra aba para evitar sobrescrita; exporte seu JSON e recarregue.
 
-Os backups JSON e os dados enviados ao Sheets permanecem legíveis nos respectivos arquivos/serviços. A criptografia local não os criptografa. Limpar o armazenamento do navegador remove o cadastro e o cofre; reinstalar ou atualizar o site não é um backup.
+Os backups JSON permanecem legíveis nos arquivos exportados. A criptografia local não os criptografa. Limpar o armazenamento do navegador remove o cadastro e o cofre; reinstalar ou atualizar o site não é um backup.

@@ -1,95 +1,71 @@
-# JSL Finanças Pessoais · web
+# JSL Finanças Pessoais · web 2.3
 
-Aplicativo pessoal em português, adaptado do HTML original JSL v1. Página estática para GitHub Pages; funciona em computador e navegador de celular. Não conecta bancos, não movimenta dinheiro e não realiza recomendações de investimento.
+Aplicativo pessoal em português para computador e celular, publicado no GitHub Pages. Os registros são salvos e criptografados no navegador. Não há backend, integração com planilhas, sincronização automática entre aparelhos ou conexão com bancos financeiros.
 
-## Acessar o aplicativo
+[Abrir aplicativo](https://santos1513lopes-lgtm.github.io/jsl-financas-pessoais/)
 
-[Abra o JSL Finanças Pessoais](https://santos1513lopes-lgtm.github.io/jsl-financas-pessoais/).
+## Funcionalidades
 
-A página foi publicada no GitHub Pages. O modo local funciona sem Google. A sincronização entre dispositivos exige configurar o Client ID OAuth; ele ainda não está configurado nesta publicação. As instruções estão em [GOOGLE-SHEETS.md](docs/GOOGLE-SHEETS.md).
+- Cadastro local de usuário e senha; login exigido a cada abertura e botão **Sair e bloquear**.
+- Migração dos dados antigos do mesmo navegador para armazenamento criptografado.
+- Contas e investimentos com saldo inicial; receitas, despesas e transferências internas.
+- Parcelamentos com centavos reconciliados e ajuste de vencimentos; recorrência mensal por 12 meses.
+- Status realizado/pendente, exclusão, filtros e visão geral de saldos, patrimônio e resultado mensal.
+- Projeção de 3, 6, 12 ou 24 meses, incluindo investimentos no patrimônio total.
+- Aba **Backup e dados** exclusivamente para exportação e restauração/atualização por JSON.
+- Recuperação de acesso mediante backup JSON válido e confirmação da substituição dos dados.
+- Layout responsivo, manifesto web e cache da interface após primeira carga online. A instalação pelo navegador depende de suporte no dispositivo.
 
-## Guias de dados
+## Primeiro acesso e login
 
-- [Google Sheets: modelo, Restrito, Editor/Leitor e configuração OAuth](docs/GOOGLE-SHEETS.md).
-- [Firebase: análise do plano gratuito e roteiro de configuração/implementação](docs/FIREBASE.md).
+Crie usuário e senha (mínimo de 8 caracteres). Nas próximas aberturas, entre com essas credenciais. Cada navegador/perfil tem seu próprio cadastro e registros. [Detalhes sobre login e recuperação](docs/LOGIN-LOCAL.md).
 
-A integração Firebase é uma proposta documentada; ela ainda não está implementada no aplicativo publicado.
+## Backup, restauração e atualização entre aparelhos
 
-## Recursos
+1. Depois de entrar, abra **Backup e dados** e clique em **Baixar backup JSON**.
+2. Guarde o arquivo com segurança. Ele contém seus dados financeiros legíveis, sem senha.
+3. Para restaurar ou atualizar outro aparelho, transfira esse arquivo manualmente e entre no aplicativo no aparelho de destino.
+4. Em **Backup e dados**, clique em **Restaurar / atualizar por JSON**, selecione o arquivo e confirme a substituição.
 
-- Cadastro de contas correntes/digitais e investimentos com saldo inicial.
-- Receitas, despesas e transferências entre suas contas.
-- Parcelamentos com centavos reconciliados e vencimentos ajustados ao último dia do mês.
-- Recorrência mensal de valor integral por 12 meses (não é recorrência infinita).
-- Status realizado/pendente, exclusão e filtros de histórico.
-- Visão geral: saldos, patrimônio, resultado mensal, compromissos e últimos lançamentos.
-- Projeção mensal de 3, 6, 12 ou 24 meses. A base inclui patrimônio total, inclusive investimentos; não representa apenas dinheiro líquido em conta.
-- Backup JSON, restauração validada e reset com confirmação digitada.
-- Google Sheets opcional: login Google, vínculo por URL, criação de planilha vazia, carga, gravação automática, gravação manual, desconexão e avisos de pendências/conflitos.
-- Layout responsivo, manifesto web e cache dos arquivos da interface para uso local após a primeira carga. A sincronização requer internet e autorização válida.
+A importação valida a estrutura e as referências entre registros antes de substituir os dados. Ela **substitui todas as contas e lançamentos atuais**, sem mesclagem. Exporte os dados atuais antes de importar e use o backup mais recente para evitar perder registros novos. A importação normal mantém o usuário e a senha do navegador de destino.
 
-## Publicar no GitHub Pages
+A atualização não é automática: escolha um aparelho para editar por vez, exporte e transfira a versão mais recente antes de continuar no outro. Não há envio dos registros ao GitHub. Não publique backups financeiros no repositório.
 
-1. Crie um repositório **público**, por exemplo `jsl-financas-pessoais`.
-2. Envie o conteúdo desta pasta para a raiz da branch `main` (não envie a pasta `upload` nem backups pessoais).
-3. Em **Settings → Pages → Build and deployment**, selecione **Deploy from a branch**, branch `main`, pasta `/ (root)` e salve.
-4. Aguarde o GitHub mostrar a URL publicada. Abra a URL exibida em Pages; não é a URL dos arquivos do repositório.
-5. Configure Google OAuth usando a origem HTTPS publicada. Veja [GOOGLE-SHEETS.md](docs/GOOGLE-SHEETS.md).
+## Esqueci o acesso
 
-O arquivo `.nojekyll` permite servir diretamente os arquivos estáticos. A ação `.github/workflows/check.yml` executa os testes, sem publicar. Não precisa de servidor, instalação de dependências, chave de API secreta ou build para o site.
-
-## Modelo Google Sheets
-
-[Modelo criado no Google Sheets](https://docs.google.com/spreadsheets/d/1jk_SC-cq_XhKoA74sqI-17NFFBXJHelrL7apR1UI4SA/edit). O proprietário pode usá-lo ou fazer uma cópia. Para distribuir um modelo a terceiros, compartilhe apenas um modelo vazio como leitor; nunca uma planilha com dados financeiros. Cada pessoa usa sua própria cópia. O botão de criar planilha no app dispensa acesso ao modelo privado do proprietário.
-
-## Primeiro uso
-
-Sem Sheets: cadastre uma conta em **Contas e investimentos** e registre lançamentos. Os dados ficam no navegador, separados por origem/site e por perfil do navegador. O HTML antigo e o site publicado não compartilham armazenamento: exporte JSON no antigo e restaure no novo.
-
-Com Sheets: configure OAuth uma vez, faça uma cópia do modelo (ou use **Criar planilha vazia no Google**), cole o link em **Backup e dados**, conecte e escolha carregar ou enviar. Use a mesma planilha nos dois dispositivos. Confirme o status “Salvo no Google Sheets” antes de alternar. No outro dispositivo, conecte/carregue antes de editar.
-
-O link de editor **não é uma credencial de API**. A conta autenticada precisa ser proprietária ou ter permissão de edição. Não é necessário compartilhar como “qualquer pessoa com o link”. O código é público; a planilha e os dados pessoais devem continuar privados.
-
-## Reset e recuperação
-
-Baixe um backup antes. **Apagar todos os dados** exige digitar `APAGAR`, remove contas e lançamentos locais e, quando conectado, envia o estado vazio para a planilha. Sem conexão/autorização, o reset fica pendente e só é remoto após reconectar e salvar. Ele não apaga o arquivo de planilha, o repositório, backups externos, histórico de versões do Google ou cópias em outros dispositivos. Para reiniciar apenas este navegador sem alterar Sheets, desconecte antes do reset.
+Clique em **Esqueci meu usuário ou senha**, selecione um JSON válido, confirme a substituição e crie novas credenciais. A recuperação substitui os dados pelo conteúdo do backup; registros posteriores a ele não são recuperados. Sem senha e sem JSON não há recuperação dos dados cifrados.
 
 ## Privacidade e limites
 
-Os dados e a URL da planilha ficam no armazenamento local do navegador. Tokens Google ficam apenas na memória e expiram; o usuário reconecta quando solicitado. Há cadastro local de usuário e senha com criptografia AES-GCM dos dados financeiros. A senha não é persistida; a chave derivada por PBKDF2 fica apenas na memória durante a sessão. Cada abertura exige login. Não há servidor de contas, analytics nem sincronização de credenciais. Veja [Login local e recuperação](docs/LOGIN-LOCAL.md). O nome de usuário e os metadados da conexão Google não são criptografados. O backup JSON exportado também não é criptografado. Desconectar Google não remove os dados locais; faça backup e reset se precisar limpar o dispositivo.
+A senha não é persistida. Os registros financeiros locais usam AES-GCM com chave derivada por PBKDF2, mantida em memória durante a sessão. O usuário fica visível no cadastro local. Essa proteção não cobre arquivos JSON exportados, sessões desbloqueadas, extensões maliciosas ou código comprometido.
 
-A autorização usada é o escopo Google Sheets (leitura/escrita de planilhas acessíveis à conta), mais amplo que apenas a planilha escolhida. O app só chama a planilha vinculada ou cria uma quando solicitado. Revogue a autorização nas permissões da conta Google se desejar.
+Limpar os dados do navegador pode apagar o cadastro e os registros. Faça backups periódicos. Limites de validação: 1.000 contas e 20.000 lançamentos. O aplicativo não movimenta dinheiro nem oferece recomendações de investimento.
 
-A sincronização envia o estado completo e testa uma impressão digital do conteúdo remoto antes de gravar. Detecta também alterações diretas nas células que mudem os dados reconhecidos pelo aplicativo. Não é transação distribuída: Google Sheets não oferece compare-and-swap nessa operação; duas gravações rigorosamente simultâneas ainda podem conflitar. **Não edite simultaneamente em dois dispositivos.** Não há atualização automática de alterações remotas enquanto você edita; carregue antes de retomar.
+## Publicar no GitHub Pages
 
-Se houver conflito, não há sobrescrita deliberada: exporte o backup local, carregue a planilha e reconcilie os registros manualmente. Não há mesclagem automática. Falhas de rede deixam os dados locais e um aviso; uma resposta perdida após gravação pode exigir recarregar. Limites por base: 1.000 contas e 20.000 lançamentos. A planilha deve ser dedicada ao app; os intervalos de dados das abas Contas, Lancamentos e Config são substituídos pelo app.
+1. Envie os arquivos à raiz da branch `main` de um repositório público, mantendo `index.html` na raiz.
+2. Em **Settings → Pages**, selecione **Deploy from a branch**, branch `main`, pasta `/ (root)` e salve.
+3. Aguarde a publicação e abra o endereço mostrado no GitHub Pages.
 
-No celular, abra no navegador. O manifesto permite uso como app quando o navegador oferecer instalação/adicionar à tela inicial; não é um APK nem app nativo de loja. O comportamento de instalação depende do navegador. Login Google não funciona offline. Os arquivos offline só ficam disponíveis após a primeira carga online e dependem do armazenamento do navegador.
+Não exige Google Cloud, credenciais de API, banco externo ou build. Para testar a aplicação localmente, use um servidor HTTP em localhost; abrir diretamente como `file://` não é o fluxo suportado. Para a publicação, use HTTPS.
 
 ## Arquivos
 
 | Arquivo | Responsabilidade |
 | --- | --- |
-| `index.html` | Interface em português |
-| `assets/style.css` | Estilo responsivo |
-| `assets/app.js` | Contas, lançamentos, projeção, armazenamento e backup |
-| `assets/core.js` | Validação e cálculo do calendário/parcelas |
-| `assets/sheets.js` | Autorização Google e sincronização Sheets |
-| `config.js` | Client ID OAuth público e URL opcional do modelo |
-| `manifest.webmanifest`, `assets/icon.svg`, `sw.js` | Identidade e cache offline da interface |
-| `docs/GOOGLE-SHEETS.md` | Instalação OAuth e estrutura da base |
-| `docs/FIREBASE.md` | Análise e roteiro para Firebase Authentication + Cloud Firestore (ainda não integrado) |
-| `docs/TESTES.md` | Validação e testes externos ainda necessários |
-| `tests/*.test.cjs` | Testes executáveis sem dependências |
+| `index.html`, `assets/style.css` | Interface e layout responsivo |
+| `assets/app.js` | Contas, lançamentos, projeções e backup JSON |
+| `assets/core.js` | Validação e cálculo de parcelas/calendário |
+| `assets/vault.js` | Armazenamento financeiro criptografado |
+| `assets/auth.js` | Cadastro, login e recuperação com JSON |
+| `manifest.webmanifest`, `assets/icon.svg`, `sw.js` | Identidade e cache da interface |
+| `docs/LOGIN-LOCAL.md` | Acesso e recuperação |
+| `docs/TESTES.md`, `tests/*.test.cjs` | Verificação e testes automatizados |
 | `.github/workflows/check.yml` | Testes no GitHub Actions |
-| `.gitignore`, `.nojekyll` | Exclusões de dados privados e publicação estática |
+| `docs/FIREBASE.md` | Estudo anterior; não representa recurso implementado |
+
+A integração com Google Sheets foi removida na versão 2.3. Os dados financeiros existentes e as credenciais locais são preservados. Metadados antigos de conexão eventualmente presentes no navegador ficam inativos; a versão atual não os utiliza nem conecta serviços externos.
 
 ## Desenvolvimento
 
-Requer Node.js 20+ somente para testes: `node --test tests/*.test.cjs`. Para executar localmente, sirva esta pasta com um servidor HTTP local, por exemplo `python3 -m http.server 8000`. OAuth local requer cadastrar `http://localhost:8000` nas origens autorizadas.
-
-Nunca coloque tokens, senhas, client secrets, planilhas preenchidas ou backups financeiros no repositório. O `googleClientId` é público por definição; `client_secret` nunca é usado no navegador.
-
-## Login local
-
-No primeiro acesso, crie usuário e senha (mínimo de 8 caracteres). Dados anteriores deste navegador são preservados e criptografados. Nas próximas aberturas, faça login. Use **Sair e bloquear** para encerrar a sessão. Em **Esqueci meu usuário ou senha**, selecione um backup JSON, confirme a substituição dos dados e crie novas credenciais. Sem senha e sem backup, não há recuperação dos registros. [Passo a passo e limites](docs/LOGIN-LOCAL.md).
+Node.js 22 para testes: `node --test tests/*.test.cjs`. Verifique a sintaxe de `assets/core.js`, `assets/vault.js`, `assets/auth.js`, `assets/app.js` e `sw.js`. Nunca envie senhas ou backups pessoais ao repositório.

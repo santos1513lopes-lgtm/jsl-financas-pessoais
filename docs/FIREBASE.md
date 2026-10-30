@@ -1,3 +1,5 @@
+> Documento histórico de estudo, anterior à versão 2.3. As comparações e propostas abaixo não descrevem a versão atual. O aplicativo atual utiliza apenas armazenamento local criptografado e transferência manual por JSON; a integração com Google Sheets foi removida. Firebase não está implementado.
+
 # Firebase: análise e roteiro de integração
 
 Verificado em 30/10/2026. Este documento analisa **Firebase, usando Cloud Firestore como banco de dados**, conforme a correção no pedido.

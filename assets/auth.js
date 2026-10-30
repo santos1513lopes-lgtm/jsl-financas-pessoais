@@ -9,7 +9,7 @@ async function run(fn){if(working)return;controls(true);el('authError').textCont
 function loadScript(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(Error('Não foi possível carregar o aplicativo. Recarregue a página.'));document.body.append(s)})}
 async function openApp(){
  el('loginPass').value='';el('setupPass').value='';el('setupConfirm').value='';
- try{if(!opened){await loadScript('assets/app.js?v=2.2.1');await loadScript('assets/sheets.js?v=2.2.1');opened=true;}el('authScreen').classList.add('hidden');el('appShell').classList.remove('hidden');el('sessionUser').textContent=vault.record.user;el('sessionBar').classList.remove('hidden');el('logoutButton').focus();}
+ try{if(!opened){await loadScript('assets/app.js?v=2.3.0');opened=true;}el('authScreen').classList.add('hidden');el('appShell').classList.remove('hidden');el('sessionUser').textContent=vault.record.user;el('sessionBar').classList.remove('hidden');el('logoutButton').focus();}
  catch(e){vault.lock();throw e;}
 }
 el('loginForm').onsubmit=e=>{e.preventDefault();return run(async()=>{await vault.unlock(el('loginUser').value,el('loginPass').value);await openApp()})};
@@ -17,7 +17,7 @@ el('setupForm').onsubmit=e=>{e.preventDefault();return run(async()=>{
  if(el('setupPass').value!==el('setupConfirm').value)throw Error('As senhas não conferem.');
  let data;if(mode==='recover'){if(!recovery)throw Error('Selecione e valide seu backup JSON primeiro.');if(!el('recoveryConfirm').checked)throw Error('Confirme que os dados serão substituídos pelo backup selecionado.');data=recovery;}else data=vault.legacy();
  await vault.setup(el('setupUser').value,el('setupPass').value,data,{replace:mode==='recover',...(mode==='recover'?{expectedRaw:recoveryRaw}:{})});
- if(mode==='recover'){localStorage.removeItem('jsl_google_binding_v2');el('recoveryFile').value='';recovery=null;}
+ if(mode==='recover'){el('recoveryFile').value='';recovery=null;}
  await openApp();
 })};
 el('forgot').onclick=()=>{recovery=null;recoveryRaw=localStorage.getItem(JSLVault.VAULT_KEY);el('recoveryFile').value='';el('recoveryInfo').textContent='';el('recoveryConfirm').checked=false;show('recover')};
