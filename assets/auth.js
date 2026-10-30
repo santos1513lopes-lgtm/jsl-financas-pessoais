@@ -12,8 +12,8 @@ async function openApp(){
  try{if(!opened){await loadScript('assets/app.js');await loadScript('assets/sheets.js');opened=true;}el('authScreen').classList.add('hidden');el('appShell').classList.remove('hidden');el('sessionUser').textContent=vault.record.user;el('sessionBar').classList.remove('hidden');el('logoutButton').focus();}
  catch(e){vault.lock();throw e;}
 }
-el('loginForm').onsubmit=e=>{e.preventDefault();run(async()=>{await vault.unlock(el('loginUser').value,el('loginPass').value);await openApp()})};
-el('setupForm').onsubmit=e=>{e.preventDefault();run(async()=>{
+el('loginForm').onsubmit=e=>{e.preventDefault();return run(async()=>{await vault.unlock(el('loginUser').value,el('loginPass').value);await openApp()})};
+el('setupForm').onsubmit=e=>{e.preventDefault();return run(async()=>{
  if(el('setupPass').value!==el('setupConfirm').value)throw Error('As senhas não conferem.');
  let data;if(mode==='recover'){if(!recovery)throw Error('Selecione e valide seu backup JSON primeiro.');if(!el('recoveryConfirm').checked)throw Error('Confirme que os dados serão substituídos pelo backup selecionado.');data=recovery;}else data=vault.legacy();
  await vault.setup(el('setupUser').value,el('setupPass').value,data,{replace:mode==='recover',...(mode==='recover'?{expectedRaw:recoveryRaw}:{})});

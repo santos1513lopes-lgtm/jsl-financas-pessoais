@@ -5,7 +5,7 @@
 1. Abra o site no navegador que pretende usar.
 2. Crie um usuário de 3 a 80 caracteres e uma senha de 8 a 256 caracteres; confirme a senha. O usuário ignora maiúsculas/minúsculas e espaços nas pontas.
 3. O aplicativo preserva os registros anteriores encontrados neste navegador e os criptografa. Se a migração não puder ser salva, o original é mantido.
-4. Faça um backup em **Configurações → Baixar backup JSON** e guarde-o em local seguro. Faça novos backups depois de alterações importantes.
+4. Faça um backup em **Backup e dados → Baixar backup JSON** e guarde-o em local seguro. Faça novos backups depois de alterações importantes.
 
 ## Próximas aberturas
 
@@ -30,6 +30,7 @@ A senha antiga não é recuperada. Sem a senha e sem um JSON válido, não é po
 - `assets/auth.js`: cadastro, login, bloqueio e recuperação condicionada à validação do JSON e confirmação de substituição. A interface financeira é carregada depois do desbloqueio.
 - `assets/app.js` e `assets/sheets.js`: persistência financeira passa pelo cofre; tokens Google continuam apenas em memória. O login local não configura nem substitui o OAuth do Google.
 - `sw.js`: cache atualizado para incluir os novos arquivos. HTTPS e Web Crypto são necessários. Falhas de armazenamento exibem aviso: exporte o JSON antes de fechar.
+- `tests/auth.test.cjs`: valida o fluxo de cadastro, login e recuperação com JSON obrigatório e confirmação.
 - `tests/vault.test.cjs`: migração, desbloqueio, senha incorreta, adulteração, troca de credenciais, conflito entre abas e falha de armazenamento. Execute `node --test tests/*.test.cjs`.
 
 A proteção é local, sem backend de autenticação. Ela não impede alguém de apagar o armazenamento ou modificar uma cópia do código, e não protege uma sessão já desbloqueada contra extensões maliciosas ou scripts comprometidos. Páginas do mesmo domínio GitHub Pages compartilham a origem do navegador; publique somente código confiável nessa conta. Evite abas simultâneas: ao detectar alterações, o app bloqueia edição na outra aba para evitar sobrescrita; exporte seu JSON e recarregue.
