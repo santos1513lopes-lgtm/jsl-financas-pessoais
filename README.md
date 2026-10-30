@@ -8,6 +8,13 @@ Aplicativo pessoal em português, adaptado do HTML original JSL v1. Página est�
 
 A página foi publicada no GitHub Pages. O modo local funciona sem Google. A sincronização entre dispositivos exige configurar o Client ID OAuth; ele ainda não está configurado nesta publicação. As instruções estão em [GOOGLE-SHEETS.md](docs/GOOGLE-SHEETS.md).
 
+## Guias de dados
+
+- [Google Sheets: modelo, Restrito, Editor/Leitor e configuração OAuth](docs/GOOGLE-SHEETS.md).
+- [Firebase: análise do plano gratuito e roteiro de configuração/implementação](docs/FIREBASE.md).
+
+A integração Firebase é uma proposta documentada; ela ainda não está implementada no aplicativo publicado.
+
 ## Recursos
 
 - Cadastro de contas correntes/digitais e investimentos com saldo inicial.
@@ -71,6 +78,7 @@ No celular, abra no navegador. O manifesto permite uso como app quando o navegad
 | `config.js` | Client ID OAuth público e URL opcional do modelo |
 | `manifest.webmanifest`, `assets/icon.svg`, `sw.js` | Identidade e cache offline da interface |
 | `docs/GOOGLE-SHEETS.md` | Instalação OAuth e estrutura da base |
+| `docs/FIREBASE.md` | Análise e roteiro para Firebase Authentication + Cloud Firestore (ainda não integrado) |
 | `docs/TESTES.md` | Validação e testes externos ainda necessários |
 | `tests/*.test.cjs` | Testes executáveis sem dependências |
 | `.github/workflows/check.yml` | Testes no GitHub Actions |

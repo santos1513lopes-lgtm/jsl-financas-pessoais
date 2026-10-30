@@ -4,6 +4,38 @@
 
 Um link de compartilhamento identifica a planilha e as permissões humanas; ele não fornece token OAuth para uma aplicação gravar na API. Este projeto usa Google Identity Services no navegador com um Client ID público. A conta que entrar no Google deve ter acesso de edição à planilha.
 
+## Qual opção escolher em Compartilhar?
+
+**“Restrito” e “Editor/Leitor” são configurações diferentes.** Restrito define quem pode acessar; Editor ou Leitor define o que uma pessoa autorizada pode fazer.
+
+| Situação | Acesso geral | Permissão da conta usada no aplicativo |
+| --- | --- | --- |
+| A planilha e o login do aplicativo usam a mesma conta Google | Restrito | Proprietário: já tem permissão, não precisa compartilhar com ninguém |
+| A planilha pertence a uma conta, mas você entrará no aplicativo com outra | Restrito | Adicione o e-mail da outra conta como Editor |
+| Alguém só precisa consultar seus dados | Restrito | Leitor; essa pessoa não conseguirá gravar pelo aplicativo |
+| Você distribui apenas um modelo vazio para outras pessoas copiarem | Conforme a distribuição pretendida | Leitor no modelo; cada pessoa será proprietária da própria cópia |
+
+Não use “Qualquer pessoa com o link — Editor” na sua base financeira. Não compartilhe com um e-mail de serviço ou com o ChatGPT: esta versão usa a sua própria conta Google autenticada no navegador.
+
+## Onde está o modelo e o que fazer agora?
+
+O [modelo JSL já foi criado no Google Sheets](https://docs.google.com/spreadsheets/d/1jk_SC-cq_XhKoA74sqI-17NFFBXJHelrL7apR1UI4SA/edit) e foi colocado na pasta ChatGPT do Drive conectado durante a preparação do projeto. Não é necessário baixar um Excel e subir novamente.
+
+1. Abra o modelo com a conta Google em que ele foi criado.
+2. Para manter o modelo vazio, use **Arquivo → Fazer uma cópia**, dê um nome à sua base e salve no seu Drive. Você também pode usar o modelo diretamente se preferir.
+3. Na cópia, clique em **Compartilhar**.
+4. Em **Acesso geral**, deixe **Restrito**.
+5. Se o login do aplicativo será com outra conta, adicione somente esse e-mail como **Editor**. Se for a mesma conta, pule esta etapa.
+6. Clique em **Copiar link** e **Concluído**.
+7. **Antes de vincular, conclua a configuração OAuth abaixo. Ela ainda está pendente no site publicado.**
+8. No aplicativo, abra **Backup e dados**, cole o link da sua cópia e clique em **Conectar com Google**.
+9. Entre com a conta proprietária ou editora. Escolha carregar os dados da planilha ou enviar os locais, conforme as confirmações na tela.
+10. Espere o status de gravação no Google Sheets antes de alternar para outro dispositivo.
+
+**Copiar o link não autoriza a API.** Enquanto o Client ID OAuth não estiver configurado, a planilha não está conectada e os lançamentos ficam apenas no navegador.
+
+Fonte: [permissões e acesso restrito no Google Drive](https://support.google.com/drive/answer/7166529).
+
 ## Configuração feita uma vez pelo administrador do site
 
 1. No [Google Cloud Console](https://console.cloud.google.com/), crie ou selecione um projeto.
