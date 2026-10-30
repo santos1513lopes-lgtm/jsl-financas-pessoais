@@ -9,7 +9,7 @@ async function run(fn){if(working)return;controls(true);el('authError').textCont
 function loadScript(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(Error('Não foi possível carregar o aplicativo. Recarregue a página.'));document.body.append(s)})}
 async function openApp(){
  el('loginPass').value='';el('setupPass').value='';el('setupConfirm').value='';
- try{if(!opened){await loadScript('assets/app.js');await loadScript('assets/sheets.js');opened=true;}el('authScreen').classList.add('hidden');el('appShell').classList.remove('hidden');el('sessionUser').textContent=vault.record.user;el('sessionBar').classList.remove('hidden');el('logoutButton').focus();}
+ try{if(!opened){await loadScript('assets/app.js?v=2.2.1');await loadScript('assets/sheets.js?v=2.2.1');opened=true;}el('authScreen').classList.add('hidden');el('appShell').classList.remove('hidden');el('sessionUser').textContent=vault.record.user;el('sessionBar').classList.remove('hidden');el('logoutButton').focus();}
  catch(e){vault.lock();throw e;}
 }
 el('loginForm').onsubmit=e=>{e.preventDefault();return run(async()=>{await vault.unlock(el('loginUser').value,el('loginPass').value);await openApp()})};
