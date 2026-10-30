@@ -2,6 +2,12 @@
 
 Aplicativo pessoal em português, adaptado do HTML original JSL v1. Página estática para GitHub Pages; funciona em computador e navegador de celular. Não conecta bancos, não movimenta dinheiro e não realiza recomendações de investimento.
 
+## Acessar o aplicativo
+
+[Abra o JSL Finanças Pessoais](https://santos1513lopes-lgtm.github.io/jsl-financas-pessoais/).
+
+A página foi publicada no GitHub Pages. O modo local funciona sem Google. A sincronização entre dispositivos exige configurar o Client ID OAuth; ele ainda não está configurado nesta publicação. As instruções estão em [GOOGLE-SHEETS.md](docs/GOOGLE-SHEETS.md).
+
 ## Recursos
 
 - Cadastro de contas correntes/digitais e investimentos com saldo inicial.
