@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSL Finanças Pessoais</title>
+<link rel="stylesheet" href="assets/style.css"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#13243b"><link rel="icon" href="assets/icon.svg"></head>
+<body>
+<header><h1>JSL – Finanças Pessoais</h1><p>Controle de contas, despesas, receitas, parcelamentos e investimentos</p></header>
+<div class="wrap"><div class="note" id="syncStatus" role="status" aria-live="polite">Dados locais neste navegador</div>
+<nav class="tabs">
+<button class="tab active" data-tab="dashboard">Visão geral</button><button class="tab" data-tab="lancamentos">Lançamentos</button><button class="tab" data-tab="contas">Contas e investimentos</button><button class="tab" data-tab="projecao">Previsão futura</button><button class="tab" data-tab="backup">Backup e dados</button>
+</nav>
+<section id="dashboard" class="panel active">
+<div class="grid">
+<div class="card metric"><small>Saldo em contas</small><strong id="mContas">R$ 0,00</strong></div>
+<div class="card metric"><small>Total investido</small><strong id="mInvest" class="green">R$ 0,00</strong></div>
+<div class="card metric"><small>Patrimônio total</small><strong id="mPatrimonio">R$ 0,00</strong></div>
+<div class="card metric"><small>Resultado do mês</small><strong id="mResultado">R$ 0,00</strong></div>
+</div>
+<div class="two">
+<div class="card"><h2>Resumo do mês</h2><div class="row"><div><small class="muted">Receitas realizadas</small><h3 id="receitasMes" class="green">R$ 0,00</h3></div><div><small class="muted">Despesas realizadas</small><h3 id="despesasMes" class="red">R$ 0,00</h3></div></div><div class="note">O patrimônio soma o saldo das contas correntes e dos investimentos. Transferências entre suas próprias contas não são consideradas receita nem despesa.</div></div>
+<div class="card"><h2>Próximos compromissos</h2><div id="proximos"></div></div>
+</div>
+<div class="card" style="margin-top:14px"><h2>Últimos lançamentos</h2><div id="ultimos" class="tablewrap"></div></div>
+</section>
+<section id="lancamentos" class="panel">
+<div class="card"><h2>Novo lançamento</h2>
+<form id="formLanc">
+<div class="formgrid">
+<div class="field"><label for="tipo">Tipo</label><select id="tipo"><option value="despesa">Despesa</option><option value="receita">Receita</option><option value="transferencia">Transferência entre contas</option></select></div>
+<div class="field"><label for="descricao">Descrição</label><input id="descricao" maxlength="1000" required placeholder="Ex.: Compra, salário, aluguel"></div>
+<div class="field"><label for="categoria">Categoria</label><select id="categoria"><option>Moradia</option><option>Alimentação</option><option>Transporte</option><option>Saúde</option><option>Educação</option><option>Lazer</option><option>Compras</option><option>Salário</option><option>Serviços</option><option>Investimento</option><option>Outros</option></select></div>
+<div class="field"><label for="valor"><span id="valueLabel">Valor total (R$)</span></label><input id="valor" type="number" min="0.01" step="0.01" required placeholder="0,00"></div>
+<div class="field"><label for="data">Data inicial / vencimento</label><input id="data" type="date" required></div>
+<div class="field" id="contaField"><label for="conta">Conta de origem / destino</label><select id="conta"></select></div>
+<div class="field" id="formaField"><label for="forma">Forma da despesa</label><select id="forma"><option value="avista">À vista</option><option value="parcelada">Parcelada</option><option value="recorrente">Recorrente mensal (12 meses)</option></select></div>
+<div class="field hidden" id="parcelasField"><label for="parcelas">Quantidade de parcelas</label><input id="parcelas" type="number" min="2" max="120" value="2"></div>
+<div class="field" id="statusField"><label for="status">Status inicial</label><select id="status"><option value="pago">Já realizado / pago</option><option value="pendente">Futuro / pendente</option></select></div>
+<div class="field hidden" id="destinoField"><label for="destino">Conta de destino</label><select id="destino"></select></div>
+</div>
+<div class="actions"><button class="primary" type="submit">Salvar lançamento</button><button type="reset">Limpar</button></div>
+</form></div>
+<div class="card" style="margin-top:14px"><div class="row"><h2 style="flex:2">Histórico de lançamentos</h2><div><label for="filtro">Filtrar</label><select id="filtro"><option value="todos">Todos</option><option value="despesa">Despesas</option><option value="receita">Receitas</option><option value="transferencia">Transferências</option><option value="pendente">Pendentes</option><option value="pago">Realizados</option></select></div></div><div id="listaLanc" class="tablewrap"></div></div>
+</section>
+<section id="contas" class="panel">
+<div class="two"><div class="card"><h2>Cadastrar conta ou investimento</h2>
+<form id="formConta"><div class="field"><label for="nomeConta">Nome da instituição / conta</label><input id="nomeConta" maxlength="1000" required placeholder="Ex.: Banco do Brasil"></div>
+<div class="formgrid"><div class="field"><label for="tipoConta">Tipo</label><select id="tipoConta"><option value="conta">Conta corrente / digital</option><option value="investimento">Investimento</option></select></div><div class="field"><label for="modalidade">Modalidade</label><select id="modalidade"><option>Conta corrente</option><option>Poupança</option><option>CDB</option><option>Renda fixa</option><option>Tesouro Direto</option><option>Fundo</option><option>Reserva</option><option>Outro</option></select></div><div class="field"><label for="saldoInicial">Saldo inicial (R$)</label><input id="saldoInicial" type="number" step="0.01" value="0"></div></div><button class="primary">Cadastrar conta</button></form></div>
+<div class="card"><h2>Como os saldos funcionam</h2><p class="muted">Cadastre cada banco e aplicação separadamente. O saldo inicial representa o valor que já existe nessa conta na data em que você começa a usar o aplicativo.</p><div class="note">Para aplicar dinheiro, registre uma transferência da conta corrente para a conta de investimento. Para resgatar, faça o caminho inverso.</div></div></div>
+<div class="card" style="margin-top:14px"><h2>Minhas contas e investimentos</h2><div id="listaContas" class="tablewrap"></div></div>
+</section>
+<section id="projecao" class="panel">
+<div class="card"><h2>Projeção de fluxo de caixa</h2><p class="muted">Estimativa por mês considerando saldos atuais, receitas e despesas futuras pendentes. Transferências internas não alteram o patrimônio total.</p>
+<div class="row"><div><label for="horizonte">Meses para projetar</label><select id="horizonte"><option>3</option><option selected>6</option><option>12</option><option>24</option></select></div><div><label for="baseProjecao">Incluir lançamentos realizados?</label><select id="baseProjecao"><option value="atual">Partir do saldo atual</option><option value="zero">Somente movimentações futuras</option></select></div></div>
+<div id="tabelaProjecao" class="tablewrap" style="margin-top:15px"></div></div>
+</section>
+<section id="backup" class="panel"><div class="card" style="margin-bottom:16px"><h2>Google Sheets · seus dados entre dispositivos</h2><p>Mantenha sua planilha privada. Use a mesma conta Google e o mesmo link no computador e no celular. O aplicativo público não publica seus lançamentos.</p><div class="field"><label for="sheetUrl">Link da sua planilha Google Sheets</label><input id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/d/..."></div><details><summary>Configuração inicial do Google (administrador do site)</summary><p>É necessário um Client ID OAuth do tipo Aplicativo da Web e a API Google Sheets ativada. Consulte <a href="docs/GOOGLE-SHEETS.md" target="_blank" rel="noopener">as instruções</a>.</p><label for="clientId">Client ID público OAuth</label><input id="clientId" placeholder="...apps.googleusercontent.com"></details><div class="actions"><button id="createGoogle">Criar planilha vazia no Google</button><button id="connectGoogle" class="primary">Conectar com Google</button><button id="pullGoogle">Carregar da planilha</button><button id="pushGoogle">Salvar agora</button><button id="disconnectGoogle">Desconectar</button></div><p class="muted">No primeiro vínculo, escolha carregar a planilha ou enviar os dados locais. Não edite em dois dispositivos ao mesmo tempo. Alterações feitas diretamente nas células exigem recarregar antes de editar no app.</p><div id="syncError" role="alert"></div></div>
+<div class="card"><h2>Backup e segurança dos dados</h2><p>Sem conexão ao Google, os dados ficam apenas neste navegador. Ao conectar uma planilha, as alterações são enviadas automaticamente enquanto sua autorização estiver válida. Não há conexão com bancos.</p><div class="actions"><button class="primary" id="exportar">Baixar backup JSON</button><label class="tab" style="display:inline-block">Restaurar backup<input id="importar" type="file" accept=".json,application/json" class="hidden"></label><button class="danger" id="limparTudo">Apagar todos os dados</button></div><div class="note">Faça backups periódicos e guarde o arquivo em local seguro. Limpar os dados do navegador pode apagar os registros salvos neste dispositivo.</div></div>
+</section>
+<footer>JSL – Finanças Pessoais • Versão 2.0 • Uso pessoal</footer>
+</div>
+<script src="config.js"></script><script src="assets/core.js"></script><script src="assets/app.js"></script><script src="assets/sheets.js"></script></body></html>

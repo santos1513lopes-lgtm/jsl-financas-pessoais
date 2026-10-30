@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+.env
+.env.*
+*Backup*.json
+*backup*.json
+credentials*.json
+client_secret*.json
+*.xlsx
+.openai/
